@@ -32,7 +32,8 @@ export const metadata: Metadata = {
   description:
     "Full Stack Developer with 4+ years of experience in MERN/MEAN, Python, AI, and modern web technologies. Building scalable and robust applications.",
   keywords: ["Full Stack Developer", "MERN Stack Developer", "MEAN Stack Developer", "Python Developer", "AI", "ReactJS Developer", 
-    "Node.js", "TypeScript", "Next.js", "Express.js", "MongoDB", "Django", "FastAPI", "Flask", "Machine Learning", "Web Development"],
+    "Node.js", "TypeScript", "Next.js", "Express.js", "MongoDB", "Django", "FastAPI", "Flask", "Machine Learning", "Web Development",
+    "Shopify", "WordPress", "WooCommerce", "PHP", ],
   authors: [{ name: "Sumit Kumar Chalotra" }],
   openGraph: {
     title: "Sumit Kumar Chalotra - Full Stack Developer",
