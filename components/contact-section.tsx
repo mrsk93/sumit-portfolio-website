@@ -38,11 +38,54 @@ export function ContactSection() {
     subject: "",
     message: "",
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error"
+    message: string
+  } | null>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log("Form submitted:", formData)
+    setSubmitStatus(null)
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const responseData = (await response.json()) as { message?: string }
+
+      if (!response.ok) {
+        setSubmitStatus({
+          type: "error",
+          message: responseData.message || "Unable to send your message. Please try again.",
+        })
+        return
+      }
+
+      setSubmitStatus({
+        type: "success",
+        message: responseData.message || "Thanks! Your message has been sent successfully.",
+      })
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      })
+    } catch {
+      setSubmitStatus({
+        type: "error",
+        message: "Network error while sending your message. Please try again.",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -167,9 +210,21 @@ export function ContactSection() {
                     />
                   </div>
 
-                  <Button type="submit" className="w-full">
+                  {submitStatus && (
+                    <p
+                      className={
+                        submitStatus.type === "success"
+                          ? "text-sm text-green-600 dark:text-green-400"
+                          : "text-sm text-red-600 dark:text-red-400"
+                      }
+                    >
+                      {submitStatus.message}
+                    </p>
+                  )}
+
+                  <Button type="submit" className="w-full" disabled={isSubmitting}>
                     <Send size={16} className="mr-2" />
-                    Send Message
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </CardContent>
